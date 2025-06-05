@@ -90,7 +90,7 @@ app.post("/chat", async (req, res) => {
 
     const completion = await groq.chat.completions.create({
       messages: [{ role: "user", content: userMessage }],
-      model: "mixtral-8x7b-32768"
+      model: "llama3-70b-8192"
     });
 
     const reply = completion.choices[0]?.message?.content || "Sorry, I didn't get that.";
