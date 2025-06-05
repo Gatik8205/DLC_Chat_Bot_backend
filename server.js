@@ -71,7 +71,7 @@
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
-const Groq = require("groq-sdk"); 
+const {Groq}= require("groq-sdk"); 
 
 const app = express();
 const PORT = process.env.PORT || 5000;
