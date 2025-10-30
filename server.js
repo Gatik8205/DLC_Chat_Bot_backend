@@ -44,7 +44,7 @@ app.post("/chat", async (req, res) => {
           content: userMessage
         }
       ],
-      model: "llama3-70b-8192"
+      model: "llama-3.1-70b-versatile"
     });
 
     const reply = completion.choices[0]?.message?.content || "Sorry, I didn't get that.";
