@@ -19,33 +19,37 @@ app.post("/chat", async (req, res) => {
   try {
     const userMessage = req.body.message;
 
-    const completion = await groq.chat.completions.create({
-      messages: [
-        { role: "system", 
-          content: `You're a digital assistant teaching digital tools like WhatsApp, Paytm, Google Maps, etc.
-          Always respond using this clean HTML format:
+    const langInstruction = req.body.lang === "hi"
+  ? "Always reply in simple Hindi (Devanagari script). Use easy words that common people understand."
+  : "Always reply in English."
 
-          <div class="bot-card">
-            <h3>📌 <strong>[TITLE]</strong></h3>
-            <p><u>Description:</u><br> [Short summary]</p>
-            <p><u>Step-by-step Guide:</u></p>
-            <ol>
-              <li>[Step 1]</li>
-              <li>[Step 2]</li>
-              ...
-            </ol>
-            <p>✅ <strong>Tip:</strong> [Optional advice or tip]</p>
-          </div>
+const completion = await groq.chat.completions.create({
+  messages: [
+    {
+      role: "system",
+      content: `You're a digital assistant teaching digital tools like WhatsApp, Paytm, Google Maps, etc.
+      Always respond using this clean HTML format:
 
-          Avoid Markdown. Always use HTML formatting. Reply in the same language user asks in.` 
-        },
-        {
-          role : "user",
-          content: userMessage
-        }
-      ],
-      model: "llama-3.3-70b-versatile"
-    });
+      <div class="bot-card">
+        <h3>📌 <strong>[TITLE]</strong></h3>
+        <p><u>Description:</u><br> [Short summary]</p>
+        <p><u>Step-by-step Guide:</u></p>
+        <ol>
+          <li>[Step 1]</li>
+          <li>[Step 2]</li>
+        </ol>
+        <p>✅ <strong>Tip:</strong> [Optional advice or tip]</p>
+      </div>
+
+      Avoid Markdown. Always use HTML formatting. ${langInstruction}`
+    },
+    {
+      role: "user",
+      content: userMessage
+    }
+  ],
+  model: "llama-3.3-70b-versatile"
+})
 
     const reply = completion.choices[0]?.message?.content || "Sorry, I didn't get that.";
     res.json({ reply });
