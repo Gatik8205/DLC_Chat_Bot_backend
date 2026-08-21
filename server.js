@@ -48,7 +48,7 @@ const completion = await groq.chat.completions.create({
       content: userMessage
     }
   ],
-  model: "llama-3.3-70b-versatile"
+  model: "openai/gpt-oss-120b",
 })
 
     const reply = completion.choices[0]?.message?.content || "Sorry, I didn't get that.";
